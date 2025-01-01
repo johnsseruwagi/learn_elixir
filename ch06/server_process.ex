@@ -15,18 +15,30 @@ defmodule ServerProcess do
   end
 
   defp loop(callback_module, current_state) do
-    new_state =
-      receive do
-        {request, caller} ->
-          {response, new_state} =
-            callback_module.handle_call(
-              request,
-              current_state
-            )
+    receive do
+      {request, caller} ->
+        {response, new_state} =
+          callback_module.handle_call(
+            request,
+            current_state
+          )
 
-          send(caller, {:response, response})
-      end
+        send(caller, {:response, response})
+        loop(callback_module, new_state)
+    end
+  end
+end
 
-    loop(callback_module, new_state)
+defmodule KeyValueStore do
+  def init do
+    %{}
+  end
+
+  def handle_call({:put, key, value}, state) do
+    {:ok, Map.put(state, key, value)}
+  end
+
+  def handle_call({:get, key}, state) do
+    {Map.get(state, key), state}
   end
 end
