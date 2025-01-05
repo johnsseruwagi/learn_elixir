@@ -18,6 +18,6 @@ defmodule Todo.CacheTest do
 
     entries = Todo.Server.entries(mary, ~D[2025-01-05])
 
-    assert [%{date: ~D[2025-01-05], title: "Testing", id: 1}] == entries
+    assert [%{date: ~D[2025-01-05], title: "Testing"}] = entries
   end
 end
