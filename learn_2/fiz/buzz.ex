@@ -1,4 +1,4 @@
-defmodule Fiz.Buzz do
+defmodule Fizz.Buzz do
   def go(min, max) do
     min..max
     |> Enum.each(&go(&1))
